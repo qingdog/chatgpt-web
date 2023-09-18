@@ -135,12 +135,13 @@ async function onConversation() {
               }
               try {
                 const jsonData = JSON.parse(chunk)
-                str += (jsonData.choices?.[0]?.delta?.content || '').replaceAll(/\n/g, '<br>')
+                str += (jsonData.choices?.[0]?.delta?.content || '')// .replaceAll(/\n/g, '<br>')
               }
               catch (error) {
                 console.warn('JSON解析失败：', chunk)
               }
             }
+
             updateChat(
               +uuid,
               dataSources.value.length - 1,
