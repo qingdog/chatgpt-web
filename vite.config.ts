@@ -50,5 +50,6 @@ export default defineConfig((env) => {
         ignoreTryCatch: false,
       },
     },
+    base: './', // 设置为相对路径
   }
 })
