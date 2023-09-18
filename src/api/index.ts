@@ -44,8 +44,35 @@ export function fetchChatAPIProcess<T = any>(
     }
   }
 
+  const requestBodyData = {
+    messages: [
+      {
+        role: 'system',
+        content: 'You are ChatGPT, a large language model trained by OpenAI.\nCarefully heed the user\'s instructions. Respond using Markdown.',
+      },
+      {
+        role: 'user',
+        content: '你好',
+      },
+    ],
+    model: 'gpt-3.5-turbo',
+    max_tokens: null,
+    temperature: 1,
+    presence_penalty: 0,
+    top_p: 1,
+    frequency_penalty: 0,
+    stream: true,
+    options: '',
+  }
+	requestBodyData.messages[1].content = data.prompt
+  data = {
+    ...requestBodyData,
+  }
+
   return post<T>({
-    url: '/chat-process',
+    // 移除/chat-process
+    url: '',
+    // url: '/chat-process',
     data,
     signal: params.signal,
     onDownloadProgress: params.onDownloadProgress,

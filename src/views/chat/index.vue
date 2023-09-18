@@ -110,6 +110,7 @@ async function onConversation() {
         prompt: message,
         options,
         signal: controller.signal,
+        // axios的回调函数
         onDownloadProgress: ({ event }) => {
           const xhr = event.target
           const { responseText } = xhr
@@ -119,13 +120,34 @@ async function onConversation() {
           if (lastIndex !== -1)
             chunk = responseText.substring(lastIndex)
           try {
-            const data = JSON.parse(chunk)
+            // const data = JSON.parse(chunk)
+            const data = JSON.parse(chunk.match(/^\n/gm) ? '{}' : chunk)// 如果不是json而是换行符则不解析
+
+            let str = ''
+            // 去除每一行（全局多行匹配gm） "data: " 前缀（如果存在），根据 SSE 规范，每个消息以两个换行符分隔。
+            const chunks = responseText.replace(/^data: ({)/gm, '$1').split('\n\n')
+            for (const chunk of chunks) {
+              if (chunk === '')
+                continue // 分割特性。字符串变成数组后，第一个和最后一个有可能为空字符串
+              if (chunk === 'data: [DONE]') {
+                console.warn(`流已完成！${chunk}`)
+                break
+              }
+              try {
+                const jsonData = JSON.parse(chunk)
+                str += (jsonData.choices?.[0]?.delta?.content || '').replaceAll(/\n/g, '<br>')
+              }
+              catch (error) {
+                console.warn('JSON解析失败：', chunk)
+              }
+            }
             updateChat(
               +uuid,
               dataSources.value.length - 1,
               {
                 dateTime: new Date().toLocaleString(),
-                text: lastText + (data.text ?? ''),
+                // text: lastText + (data.text ?? ''),
+                text: str,
                 inversion: false,
                 error: false,
                 loading: true,
@@ -502,7 +524,7 @@ onUnmounted(() => {
                   <template #icon>
                     <SvgIcon icon="ri:stop-circle-line" />
                   </template>
-									{{ t('common.stopResponding') }}
+                  {{ t('common.stopResponding') }}
                 </NButton>
               </div>
             </div>

@@ -1,7 +1,7 @@
 import type { App } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { setupPageGuard } from './permission'
+// import { setupPageGuard } from './permission'
 import { ChatLayout } from '@/views/chat/layout'
 
 const routes: RouteRecordRaw[] = [
@@ -44,7 +44,8 @@ export const router = createRouter({
   scrollBehavior: () => ({ left: 0, top: 0 }),
 })
 
-setupPageGuard(router)
+// 这里不保存后端session接口的的会话（类型有：自定义的ChatGPTAPI）
+// setupPageGuard(router)
 
 export async function setupRouter(app: App) {
   app.use(router)
