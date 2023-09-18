@@ -3,7 +3,8 @@ import { computed, useAttrs } from 'vue'
 import { Icon } from '@iconify/vue'
 
 interface Props {
-  icon?: string
+  // 暂时处理
+  icon: any
 }
 
 defineProps<Props>()
@@ -14,8 +15,6 @@ const bindAttrs = computed<{ class: string; style: string }>(() => ({
   class: (attrs.class as string) || '',
   style: (attrs.style as string) || '',
 }))
-// 暂时处理
-const icon = ''
 </script>
 
 <template>
