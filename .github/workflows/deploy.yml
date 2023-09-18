@@ -44,6 +44,8 @@ jobs:
         run: npm install
       - name: npm run build - 编译和缩小以用于生产
         run: npm run build
+        env:
+          VITE_GLOB_API_URL: ${{ secrets.VITE_GLOB_API_URL }}
 
       # 统一 上传构建版本 和 部署到github页面版本 为v2
       - name: Upload artifact - 上传构建产物dist/
