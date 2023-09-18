@@ -147,7 +147,7 @@ async function onConversation() {
               {
                 dateTime: new Date().toLocaleString(),
                 // text: lastText + (data.text ?? ''),
-                text: str,
+                text: str || lastText + (data.text ?? ''),
                 inversion: false,
                 error: false,
                 loading: true,
