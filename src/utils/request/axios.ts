@@ -10,6 +10,8 @@ service.interceptors.request.use(
     const token = useAuthStore().token
     if (token)
       config.headers.Authorization = `Bearer ${token}`
+    else
+      config.headers.Authorization = `Bearer ${import.meta.env.VITE_GLOB_API_SECRET}`
     return config
   },
   (error) => {

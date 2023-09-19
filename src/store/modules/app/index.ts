@@ -17,6 +17,7 @@ export const useAppStore = defineStore('app-store', {
     },
 
     setLanguage(language: Language) {
+      console.warn(language)
       if (this.language !== language) {
         this.language = language
         this.recordState()
